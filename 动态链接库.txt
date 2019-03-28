@@ -1,0 +1,20 @@
+cd到ds3231.c所在目录;
+gcc -Wall -shared -fPIC ds3231.c -o libds3231.so -lbcm2835
+
+python中示例;
+#加载ctypes
+import ctypes
+#链接到具体库
+getds = ctypes.CDLL("./Downloads/Program/CM3/DS3231/bcm2835/libds3231.so")
+#库里初始化函数调用，并打印返回值（调试时使用，因为需要sudo权限）
+print(getds.ds3231_init())
+#定义bytes，作为数组
+buf_b = b'2019-01-18 18:18:18'
+#传递给库函数指针
+getds.pcf8563ReadTime(buf_b)
+#把bytes变量转换成str变量
+strtime = str(buf_b,encoding = "utf8")
+#打印输出查看返回值是否正确
+print(strtime)
+#退出
+exit()
